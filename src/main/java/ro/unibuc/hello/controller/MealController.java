@@ -16,7 +16,6 @@ public class MealController {
     @Autowired
     private MealRepository mealRepository;
 
-    private final AtomicLong counter = new AtomicLong();
 
     @GetMapping("/meal")
     @ResponseBody
