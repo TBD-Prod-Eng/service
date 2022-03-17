@@ -42,7 +42,8 @@ public class MealService {
     }
 
     public Meal createMeal(Meal meal) {
-        return repository.save(meal);
+        repository.save(meal);
+        return meal;
     }
 
     public Meal updateMeal(String mealId, Meal request) {
