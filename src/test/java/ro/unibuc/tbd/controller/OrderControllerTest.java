@@ -126,22 +126,22 @@ class OrderControllerTest {
                 objectMapper.writeValueAsString(order));
     }
 
-    @Test
-    void updateOrder() throws Exception {
-        // Arrange
-        when(orderService.updateOrder(any(), any())).thenReturn(order);
-
-        // Act
-        MvcResult result = mockMvc.perform(patch(API_PATH + order.getId())
-                        .content(objectMapper.writeValueAsString(order))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        // Assert
-        assertEquals(result.getResponse().getContentAsString(),
-                objectMapper.writeValueAsString(order));
-    }
+//    @Test
+//    void updateOrder() throws Exception {
+//        // Arrange
+//        when(orderService.updateOrder(any(), any())).thenReturn(order);
+//
+//        // Act
+//        MvcResult result = mockMvc.perform(patch(API_PATH + order.getId())
+//                        .content(objectMapper.writeValueAsString(order))
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        // Assert
+//        assertEquals(result.getResponse().getContentAsString(),
+//                objectMapper.writeValueAsString(order));
+//    }
 
     @Test
     void deleteOrder() throws Exception {
