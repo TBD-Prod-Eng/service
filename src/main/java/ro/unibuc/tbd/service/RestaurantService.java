@@ -47,15 +47,12 @@ public class RestaurantService {
     }
 
     public Restaurant updateRestaurant(String restaurantId, Restaurant request) {
-        Optional<Restaurant> optionalRestaurant = repository.findById(restaurantId);
-        if (optionalRestaurant.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant not found.");
-        }
+        Restaurant restaurant = this.getRestaurantById(restaurantId);
 
-        Restaurant restaurant = optionalRestaurant.get();
         restaurant.updateRestaurant(request);
 
-        return repository.save(restaurant);
+        repository.save(restaurant);
+        return restaurant;
     }
 
     public Restaurant deleteRestaurantById(String restaurantId) {

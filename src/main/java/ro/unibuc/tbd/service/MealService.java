@@ -42,28 +42,21 @@ public class MealService {
     }
 
     public Meal createMeal(Meal meal) {
-        return repository.save(meal);
+        repository.save(meal);
+        return meal;
     }
 
     public Meal updateMeal(String mealId, Meal request) {
-        Optional<Meal> optionalMeal = repository.findById(mealId);
-        if (optionalMeal.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Meal not found.");
-        }
+        Meal meal = this.getMealById(mealId);
 
-        Meal meal = optionalMeal.get();
         meal.updateMeal(request);
 
-        return repository.save(meal);
+        repository.save(meal);
+        return meal;
     }
 
     public Meal deleteMealById(String mealId) {
-        Optional<Meal> optionalMeal = repository.findById(mealId);
-        if (optionalMeal.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Meal not found.");
-        }
-
-        Meal meal = optionalMeal.get();
+        Meal meal = this.getMealById(mealId);
 
         repository.deleteById(mealId);
         return meal;

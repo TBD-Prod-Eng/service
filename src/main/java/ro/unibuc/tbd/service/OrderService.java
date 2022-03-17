@@ -72,28 +72,22 @@ public class OrderService {
             order.totalPrice += optionalMeal.get().price * quantity;
         }
 
-        return repository.save(order);
+        repository.save(order);
+        return order;
     }
 
-    public Order updateOrder(String orderId, Order request) {
-        Optional<Order> optionalOrder = repository.findById(orderId);
-        if (optionalOrder.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found.");
-        }
-
-        Order order = optionalOrder.get();
-        order.updateOrder(request);
-
-        return repository.save(order);
-    }
+//    Orders should not be modifiable
+//    public Order updateOrder(String orderId, Order request) {
+//        Order order = this.getOrderById(orderId);
+//
+//        order.updateOrder(request);
+//
+//        repository.save(order);
+//        return order;
+//    }
 
     public Order deleteOrderById(String orderId) {
-        Optional<Order> optionalOrder = repository.findById(orderId);
-        if (optionalOrder.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found.");
-        }
-
-        Order order = optionalOrder.get();
+        Order order = this.getOrderById(orderId);
 
         repository.deleteById(orderId);
         return order;
