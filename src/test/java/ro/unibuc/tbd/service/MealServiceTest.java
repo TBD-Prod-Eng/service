@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.server.ResponseStatusException;
 import ro.unibuc.tbd.model.Meal;
 import ro.unibuc.tbd.repository.MealRepository;
 
@@ -111,6 +112,26 @@ class MealServiceTest {
         assertEquals(result.getPrice(), other.getPrice());
         assertEquals(result.getPortionSize(), other.getPortionSize());
         assertEquals(result.getRestaurantId(), other.getRestaurantId());
+    }
+
+    @Test
+    void getMealByIdThrowsOnEmpty() {
+        when(mealRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class,
+                () -> mealService.getMealById(meal.getId()),
+                "Expected getMealById() to throw a ResponseStatusException, but it didn't."
+        );
+    }
+
+    @Test
+    void getMealByNameThrowsOnEmpty() {
+        when(mealRepository.findByName(any())).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class,
+                () -> mealService.getMealByName(meal.getName()),
+                "Expected getMealByName() to throw a ResponseStatusException, but it didn't."
+        );
     }
 
     @Test

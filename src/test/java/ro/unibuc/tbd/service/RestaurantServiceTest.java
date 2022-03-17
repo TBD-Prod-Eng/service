@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.server.ResponseStatusException;
 import ro.unibuc.tbd.model.Restaurant;
 import ro.unibuc.tbd.repository.RestaurantRepository;
 
@@ -51,6 +52,16 @@ class RestaurantServiceTest {
         Restaurant result = restaurantService.getRestaurantById(restaurant.getId());
 
         assertEquals(result, restaurant);
+    }
+
+    @Test
+    void getRestaurantByIdThrowsOnEmpty() {
+        when(restaurantRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class,
+                () -> restaurantService.getRestaurantById(restaurant.getId()),
+                "Expected getRestaurantById() to throw a ResponseStatusException, but it didn't."
+        );
     }
 
     @Test
