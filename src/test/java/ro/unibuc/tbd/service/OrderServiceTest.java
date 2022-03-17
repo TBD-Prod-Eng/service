@@ -123,6 +123,36 @@ class OrderServiceTest {
         assertEquals(result.getMeals(), order.getMeals());
     }
 
+    @Test
+    void createOrder_ThrowsWhenClientNotFound() {
+        // Arrange
+        when(clientRepository.findById(any())).thenReturn(Optional.empty());
+
+        // Act + Assert
+        assertThrows(ResponseStatusException.class,
+                () -> orderService.createOrder(order),
+                "Expected createOrder() to throw a ResponseStatusException, but it didn't.");
+    }
+
+    @Test
+    void createOrder_ThrowsWhenMealNotFound() {
+        // Arrange
+        Client client = new Client();
+        client.setId("gfdgdf4325s01583f06eff");
+        client.setName("John");
+        client.setEmail("john@gmail.com");
+        client.setAddress("284 Garfield Ave. Hackensack, NJ 07601");
+        client.setPhoneNumber("0762476343");
+
+        when(clientRepository.findById(any())).thenReturn(Optional.of(client));
+        when(mealRepository.findById(any())).thenReturn(Optional.empty());
+
+        // Act + Assert
+        assertThrows(ResponseStatusException.class,
+                () -> orderService.createOrder(order),
+                "Expected createOrder() to throw a ResponseStatusException, but it didn't.");
+    }
+
 
     @Test
     void deleteOrderById() {
