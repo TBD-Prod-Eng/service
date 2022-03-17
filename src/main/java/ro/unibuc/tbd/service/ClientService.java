@@ -70,6 +70,7 @@ public class ClientService {
         Client client = this.getClientById(clientId);
 
         Optional<Meal> optionalMeal = mealRepository.findById(cartRequest.mealId);
+
         if (optionalMeal.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Meal not found.");
         }

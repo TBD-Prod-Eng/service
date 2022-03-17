@@ -1,8 +1,9 @@
 package ro.unibuc.tbd.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -49,5 +50,38 @@ class ClientTest {
 
         // Assert
         assertTrue(client.getCart().containsKey(mealId));
+    }
+
+    @Test
+    void removeFromCart() {
+        // Arrange
+        String mealId = "622ac0a71068101583f06eff";
+
+        // Act
+        client.addToCart(mealId);
+        client.removeFromCart(mealId);
+
+        // Assert
+        assertFalse(client.getCart().containsKey(mealId));
+    }
+
+    @Test
+    void clearCart() {
+        // Arrange
+        String mealId1 = "622ac0a71068101583f06eff";
+        String mealId2 = "622ac1a71068101583f06eff";
+        String mealId3 = "622ac0a71068121583f06eff";
+
+        // Act
+        client.addToCart(mealId1);
+        client.addToCart(mealId2);
+        client.addToCart(mealId3);
+        client.clearCart();
+
+        // Assert
+        assertFalse(client.getCart().containsKey(mealId1));
+        assertFalse(client.getCart().containsKey(mealId2));
+        assertFalse(client.getCart().containsKey(mealId3));
+        assertTrue(client.getCart().isEmpty());
     }
 }

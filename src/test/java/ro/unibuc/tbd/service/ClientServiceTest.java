@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ro.unibuc.tbd.model.CartRequestDTO;
 import ro.unibuc.tbd.model.Client;
 import ro.unibuc.tbd.model.Meal;
+
 import ro.unibuc.tbd.repository.ClientRepository;
 import ro.unibuc.tbd.repository.MealRepository;
 
