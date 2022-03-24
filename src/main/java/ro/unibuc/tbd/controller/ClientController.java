@@ -64,4 +64,9 @@ public class ClientController {
     public Client deleteClient(@PathVariable String clientId) {
         return clientService.deleteClientById(clientId);
     }
+
+    @DeleteMapping("/clear")
+    public void deleteAllClients() {
+        clientService.clearAll();
+    }
 }

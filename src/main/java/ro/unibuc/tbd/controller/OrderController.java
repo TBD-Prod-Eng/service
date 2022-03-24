@@ -49,4 +49,9 @@ public class OrderController {
     public Order deleteOrder(@PathVariable String orderId) {
         return orderService.deleteOrderById(orderId);
     }
+
+    @DeleteMapping("/clear")
+    public void deleteAllClients() {
+        orderService.clearAll();
+    }
 }
