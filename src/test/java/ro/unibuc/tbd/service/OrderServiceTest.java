@@ -36,9 +36,6 @@ class OrderServiceTest {
     MealRepository mealRepository;
 
     @Mock
-    RestaurantRepository restaurantRepository;
-
-    @Mock
     ClientRepository clientRepository;
 
     @InjectMocks
