@@ -43,6 +43,10 @@ public class ClientService {
         return repository.findAll();
     }
 
+    public void clearAll() {
+        repository.deleteAll();
+    }
+
     public Client createClient(Client client) {
         client.cart = new HashMap<>();
 

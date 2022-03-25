@@ -47,6 +47,10 @@ public class OrderService {
         return repository.findAll();
     }
 
+    public void clearAll() {
+        repository.deleteAll();
+    }
+
     public Order createOrder(Order order) {
         Optional<Client> optionalClient = clientRepository.findById(order.clientId);
         if (optionalClient.isEmpty()) {
