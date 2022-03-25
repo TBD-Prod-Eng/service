@@ -1,12 +1,11 @@
-package ro.unibuc.tbd.service;
+package ro.unibuc.tbd.it;
 
-import java.util.List;
-import java.util.Optional;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 import ro.unibuc.tbd.model.Client;
 import ro.unibuc.tbd.model.Meal;
@@ -14,32 +13,41 @@ import ro.unibuc.tbd.model.Order;
 import ro.unibuc.tbd.repository.ClientRepository;
 import ro.unibuc.tbd.repository.MealRepository;
 import ro.unibuc.tbd.repository.OrderRepository;
-import ro.unibuc.tbd.repository.RestaurantRepository;
+import ro.unibuc.tbd.service.ClientService;
+import ro.unibuc.tbd.service.MealService;
+import ro.unibuc.tbd.service.OrderService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class OrderServiceTest {
+public class OrderServiceIT {
 
-    @Mock
+    @MockBean
     OrderRepository orderRepository;
 
-    @Mock
+    @MockBean
     MealRepository mealRepository;
 
-    @Mock
+    @MockBean
     ClientRepository clientRepository;
 
-    @InjectMocks
+    @Autowired
     OrderService orderService;
+
+    @Autowired
+    ClientService clientService;
+
+    @Autowired
+    MealService mealService;
 
     private Order order;
 
@@ -54,38 +62,11 @@ class OrderServiceTest {
         order.setTotalPrice(40f);
     }
 
-    @Test
-    void getOrderById() {
-        // Arrange
-        when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(order));
-
-        // Act
-        Order result = orderService.getOrderById(order.getId());
-
-        assertEquals(result, order);
-    }
-
-    @Test
-    void getOrderByIdThrowsOnEmpty() {
-        // Arrange
-        when(orderRepository.findById(any())).thenReturn(Optional.empty());
-
-        // Act + Assert
-        assertThrows(ResponseStatusException.class,
-                () -> orderService.getOrderById(order.getId()),
-                "Expected getOrderById() to throw a ResponseStatusException, but it didn't."
-        );
-    }
-
-    @Test
-    void getAllOrdersReturnsEmptyList() {
-        // Arrange
-
-        // Act
-        var result = orderService.getAllOrders();
-
-        // Assert
-        assertEquals(result.size(), 0);
+    @AfterEach
+    void cleanUp() {
+        orderRepository.deleteAll();
+        mealRepository.deleteAll();
+        clientRepository.deleteAll();
     }
 
     @Test
@@ -97,6 +78,8 @@ class OrderServiceTest {
         client.setEmail("john@gmail.com");
         client.setAddress("284 Garfield Ave. Hackensack, NJ 07601");
         client.setPhoneNumber("0762476343");
+        clientService.createClient(client);
+
 
         Meal meal = new Meal();
         meal.setId("gfddgf4325s01583f06eff");
@@ -106,6 +89,7 @@ class OrderServiceTest {
         meal.setPrice(22f);
         meal.setPortionSize(220);
         meal.setRestaurantId("fdsfadsfewsds2342f");
+        mealService.createMeal(meal);
 
         when(clientRepository.findById(any())).thenReturn(Optional.of(client));
         when(mealRepository.findById(any())).thenReturn(Optional.of(meal));
@@ -121,17 +105,6 @@ class OrderServiceTest {
     }
 
     @Test
-    void createOrder_ThrowsWhenClientNotFound() {
-        // Arrange
-        when(clientRepository.findById(any())).thenReturn(Optional.empty());
-
-        // Act + Assert
-        assertThrows(ResponseStatusException.class,
-                () -> orderService.createOrder(order),
-                "Expected createOrder() to throw a ResponseStatusException, but it didn't.");
-    }
-
-    @Test
     void createOrder_ThrowsWhenMealNotFound() {
         // Arrange
         Client client = new Client();
@@ -140,6 +113,7 @@ class OrderServiceTest {
         client.setEmail("john@gmail.com");
         client.setAddress("284 Garfield Ave. Hackensack, NJ 07601");
         client.setPhoneNumber("0762476343");
+        clientService.createClient(client);
 
         when(clientRepository.findById(any())).thenReturn(Optional.of(client));
         when(mealRepository.findById(any())).thenReturn(Optional.empty());
@@ -148,19 +122,5 @@ class OrderServiceTest {
         assertThrows(ResponseStatusException.class,
                 () -> orderService.createOrder(order),
                 "Expected createOrder() to throw a ResponseStatusException, but it didn't.");
-    }
-
-
-    @Test
-    void deleteOrderById() {
-        // Arrange
-        when(orderRepository.findById(any())).thenReturn(Optional.ofNullable(order));
-
-        // Act
-        Order result = orderService.deleteOrderById(order.getId());
-
-        // Assert
-        verify(orderRepository, times(1)).deleteById(eq(order.getId()));
-        assertEquals(result, order);
     }
 }
