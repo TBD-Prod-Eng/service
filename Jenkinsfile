@@ -10,7 +10,7 @@ pipeline {
             steps {
                 sh './gradlew clean build'
             }
-        },
+        }
         stage('Tag image') {
               steps {
                 script {
