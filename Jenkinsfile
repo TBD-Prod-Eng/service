@@ -8,6 +8,7 @@ pipeline {
     stages {
         stage('Build & Test') {
             steps {
+                echo 'Running clean and build...'
                 sh './gradlew clean build'
             }
         }
@@ -19,6 +20,7 @@ pipeline {
                     MINOR_VERSION = sh([script: 'git tag | cut -d . -f 2', returnStdout: true]).trim()
                     PATCH_VERSION = sh([script: 'git tag | cut -d . -f 3', returnStdout: true]).trim()
                 }
+                echo 'Tagging docker image with new version: ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}'
                 sh "docker build -t alexandrudumeadumea/hello-img:${MAJOR_VERSION}.\$((${MINOR_VERSION} + 1)).${PATCH_VERSION} ."
               }
         }
