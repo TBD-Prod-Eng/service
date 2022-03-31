@@ -36,7 +36,7 @@ public class ClientService {
             return client.get();
         }
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found.");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found");
     }
 
     public List<Client> getAllClients() {
