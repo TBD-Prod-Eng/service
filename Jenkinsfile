@@ -2,7 +2,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_PASSWORD = credentials("laboratorprodeng")
+        DOCKER_PASSWORD = credentials("docker_password")
     }
 
     stages {
