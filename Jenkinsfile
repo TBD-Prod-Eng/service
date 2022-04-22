@@ -25,6 +25,7 @@ pipeline {
 
                 echo 'Tagging docker image with new version: ${env.IMAGE_TAG}'
 
+                sh "docker login -u alexandrudumeadumea -p $DOCKER_PASSWORD"
                 sh "docker build -t alexandrudumeadumea/hello-img:${env.IMAGE_TAG} ."
                 sh "docker push alexandrudumeadumea/hello-img:${env.IMAGE_TAG}"
 
